@@ -12,6 +12,7 @@ import time
 import numpy as np
 
 import demo 
+import test as db
 
 size=608 # my training dataset is created with size of 608x608
 number_of_classes=len(utils.read_class_names(cfg.YOLO.CLASSES)) # number of classes
@@ -57,8 +58,21 @@ def licensePlateRecognition():
         img=frame[int(bboxes[i][1]):int(bboxes[i][3]),int(bboxes[i][0]):int(bboxes[i][2])]
         img=cv2.resize(img,(640,300))
         cv2.imwrite('inputs/result.jpg',img)
-        print(demo.readText())
+        k=(demo.readText())
 
+        if (k==None):
+            st.error("Re-Captured It again")
+        else:
+            #st.success(k)
+            a=db.readFromDatabase(k)
+            s='License Plate: ' + str(a[1]) +'\n,'
+            s+=' Owner Name: ' + str(a[2]) +'\n,'
+            s+=' Vehicle Type: ' + str(a[3]) +'\n,'
+            s+=' Owner Address: ' + str(a[4]) +'\n,'
+            s+=' Mobile Number: ' + str(a[5]) +'\n,'
+            s+=' Email ID: ' + str(a[6]) +'\n,'
+            s+=' Chalan: ' + str(a[7])
+            st.success(s)
 
 if src_file is not None:
     file_details={
